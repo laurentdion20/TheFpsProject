@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class DemoGameOver : MonoBehaviour {
 
@@ -20,7 +21,8 @@ public class DemoGameOver : MonoBehaviour {
 		if(_replay){
 			GUI.skin = skin;
 			if(GUI.Button(new Rect(Screen.width/2-25,Screen.height/1.5f,50,30),"Replay")){
-				Application.LoadLevel(Application.loadedLevel);
+				// Before --> Application.LoadLevel(Application.loadedLevel);
+                SceneManager.LoadScene("Fucking unity");
 			}
 		}
 	}
