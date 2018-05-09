@@ -11,5 +11,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d442e1a109e0ef14a996f6f93749a693, type: 3}
   m_Name: ArTry
   m_EditorClassIdentifier: 
-  ArGun: {fileID: 0}
-  exit: {fileID: 0}
+  bulletInventory: 169
+  magBulletInventory: 42
+  bulletLoaded: 42
+  gunRange: 99
+  bulletDamage: 3
+  reloadtime: 1
+  timeBetweenShoot: 0.12
+  xMax: 5
+  yMax: 2
+  zMax: 0
