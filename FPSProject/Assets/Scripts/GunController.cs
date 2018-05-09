@@ -5,9 +5,12 @@ using UnityEngine.UI;
 
 public class GunController : MonoBehaviour
 {
+	#region Variable List;
+	public GunData gunData; 
     public Transform Cam;
-    public GameObject bulletPrefab;
-    public GameObject ArGun;
+
+
+    public GameObject Gun;
     private int shooted;
     bool isReloading;
     bool timeBetweenShootDone;
@@ -25,7 +28,7 @@ public class GunController : MonoBehaviour
     int bulletLoaded;
     float reloadtime;
     float timeBetweenShoot;
-    int ArRange;
+    int gunRange;
     float bulletDamage;
 
     //recoil
@@ -37,35 +40,32 @@ public class GunController : MonoBehaviour
     float recoilZ;
     bool asShoot;
     Quaternion startPosition;
+	Quaternion testOne;
 
     //animation
     Animator ArAnimator;
-    AnimationClip[] ArClipList;
-    Animation reloading;
     bool isAiming;
     bool reloadindDone;
     bool reAiming;
+	#endregion
 
-    //Sound & SRX
-    AudioSource ArGunAudioSource;
-    AudioClip shootClip;
-
-    void Start()
+	void Start()
     {
+
         //Gun stats
-        playerBulletStorage = 120;
-        magBulletStorage = 30;
-        bulletLoaded = 30;
-        reloadtime = 1f;
-        timeBetweenShoot = 0.12f;
+        playerBulletStorage = gunData.bulletInventory;
+        magBulletStorage = gunData.magBulletInventory;
+        bulletLoaded = gunData.bulletLoaded;
+        reloadtime = gunData.reloadtime;
+        timeBetweenShoot = gunData.timeBetweenShoot;
         timeBetweenShootDone = true;
-        ArRange = 100;
-        bulletDamage = 1;
+        gunRange = gunData.gunRange;
+        bulletDamage = gunData.bulletDamage;
 
         //recoil;
-        xMax = 2;
-        yMax = 0.5f;
-        zMax = 0;
+        xMax = gunData.xMax;
+        yMax = gunData.yMax;
+        zMax = gunData.zMax;
         startPosition = Cam.transform.rotation;
 
         //UI
@@ -73,11 +73,8 @@ public class GunController : MonoBehaviour
 
         //Animation
         isAiming = false;
-        ArAnimator = ArGun.GetComponent<Animator>();
+        ArAnimator = Gun.GetComponent<Animator>();
         reAiming = false;
-
-        //Sound & SFX
-        ArGunAudioSource = ArGun.GetComponent<AudioSource>();
 
     }
     void Update()
@@ -121,12 +118,14 @@ public class GunController : MonoBehaviour
     {
         if (Input.GetButton("Fire1") && bulletLoaded >= 1 && !isReloading) { 
 
-            AddRecoil();
+            
             if (timeBetweenShootDone)
             {
+				AddRecoil();
+				//Debug.Log("Shoot is done ");
                 //shoot
                RaycastHit ray;
-                if (Physics.Raycast(exit.transform.position, exit.transform.forward, out ray, ArRange))
+                if (Physics.Raycast(exit.transform.position, exit.transform.forward, out ray, gunRange))
                 {
                     Debug.DrawRay(exit.transform.position, exit.transform.TransformDirection(Vector3.forward) * ray.distance, Color.red);
                     Target_Hp target = ray.transform.GetComponent<Target_Hp>();
@@ -136,6 +135,8 @@ public class GunController : MonoBehaviour
                     }
                 }
                 bulletLoaded--;
+
+				//Debug.Log("Bullet loaded = " + bulletLoaded);
                 timeBetweenShootDone = false;
                 Invoke("TimeBetweenShootReset", timeBetweenShoot);
             }
@@ -153,16 +154,18 @@ public class GunController : MonoBehaviour
         if (isAiming)
         {
             float recoilX = Random.Range(0, xMax);
-            float recoilY = Random.Range(0, yMax);
-            Cam.transform.Rotate(Vector3.right, -recoilX);
-            Cam.transform.Rotate(Vector3.up, -recoilY);
-        }
+            float recoilY = Random.Range(-yMax, yMax);
+			//   Cam.transform.Rotate(Vector3.right, -recoilX);
+			// Cam.transform.Rotate(Vector3.up,-recoilY);
+
+	
+		}
         else
         {
             float recoilX = Random.Range(0, xMax*3);
             float recoilY = Random.Range(0, yMax*3);
-            Cam.transform.Rotate(Vector3.right, -recoilX);
-            Cam.transform.Rotate(Vector3.up, -recoilY);
+         //   Cam.transform.Rotate(Vector3.right, -recoilX);
+          //  Cam.transform.Rotate(Vector3.up, -recoilY);
         }
     }
 

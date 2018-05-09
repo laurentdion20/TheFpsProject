@@ -22,7 +22,6 @@ public class BulletVelocity : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
         
         bullet.GetComponent<Rigidbody>().velocity = StartRotation * startVelocity;
     }
